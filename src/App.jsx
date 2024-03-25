@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import Home from "./component/Home/Home";
+import Login from "./component/Login/Login";
+
+import { auth } from "./firebase";
+
+import "./App.css";
+import NewLogin from './component/Login/NewLogin';
+import SignUp from './component/Signup/NewSignup';
+import NewSignup from './component/Signup/NewSignup';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserName(user.displayName);
+      } else setUserName("");
+    });
+  }, [userName]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      {/* <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<Home name={userName} />} />
+        </Routes>
+      </Router> */}
+      {/* <FontAwesomeIcon icon={['fab', 'twitter']} />
+
+      <FontAwesomeIcon icon={['fab', 'facebook']} />
+
+      <FontAwesomeIcon icon={['fab', 'linkedin']} />
+
+      <FontAwesomeIcon icon={['fab', 'github']} /> */}
+
+      <NewLogin/>
+      {/* <NewSignup/> */}
+    </div>
+  );
 }
 
-export default App
+export default App;
